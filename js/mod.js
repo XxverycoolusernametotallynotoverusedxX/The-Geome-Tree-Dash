@@ -83,12 +83,14 @@ function getPointGen() {
 	if (hasUpgrade('att', 14)) gain = gain.times(1.1)
 	if (hasUpgrade('att', 15)) gain = gain.times(1.1)
 	if (hasUpgrade('att', 16)) gain = gain.times(1.25)
+	if (hasUpgrade('att', 21)) gain = gain.times(1.5)
 	if (hasUpgrade('per', 12)) gain = gain.times(1.1)
 	if (hasUpgrade('per', 13)) gain = gain.times(1.1)
 	if (hasUpgrade('per', 14)) gain = gain.times(1.2)
 	if (hasUpgrade('per', 15)) gain = gain.times(1.22)
 	if (hasUpgrade('per', 16)) gain = gain.times(1.05)
 	if (hasMilestone('att', 0)) gain = gain.times(5)
+	if (hasUpgrade('per', 21)) gain = gain.times(upgradeEffect('per', 21))
 	return gain
 }
 
