@@ -16,6 +16,8 @@ addLayer("per", {
     gainMult() { // Calculate the multiplier for main currency from bonuses
         let mult = new Decimal(1)
 		if (hasMilestone('per', 0)) mult = mult.times(0.50)
+		if (hasMilestone('per', 1)) mult = mult.times(0.001)
+		if (hasMilestone('per', 2)) mult = mult.times(1000)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -26,6 +28,11 @@ addLayer("per", {
         {key: "p", description: "P: get 1% more of the level", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true},
+		doReset(resettingLayer) {
+			let keep = [];
+			if (hasMilestone("att", 0) && resettingLayer=="att") keep.push("upgrades")
+			if (layers[resettingLayer].row > this.row) layerDataReset("per", keep)
+		},
 	infoboxes: {
 		lore: {
 			title: "Hello, welcome to geometree dash 1.2",
@@ -65,6 +72,15 @@ addLayer("per", {
 	unlocked() { return player[this.layer].points.gte(22)},
 	fullDisplay() {return `A quarter of the way there! <br> <br> requires: 25% <br> <br> effect: +25% progress/confidence`}
         },
+        21: {
+	canAfford() {return player.per.points.gte(22) },
+	unlocked() { return player[this.layer].points.gte(22)&&player.att.points.gte(110)},
+	fullDisplay() {return `Progress->confidence synergy <br> <br> requires: 22% and 110 attempts <br> <br> boosting progress based on percentage by ` + upgradeEffect([this.layer], [this.id])},
+    effect() {
+        return player[this.layer].points.add(1)
+    },
+    effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
 	},
 	milestones: {
 		0: {
@@ -72,7 +88,19 @@ addLayer("per", {
 			effectDescription: "I said this is extreme hell, not grandpa hell, % cost is halved",
 			done() { return player[this.layer].points.gte(16) },
 			unlocked() { return player[this.layer].points.gte(14)}
-			}
+			},
+		1: {
+			requirementDescription: "thirty per- wait, is this a spaceship?",
+			effectDescription: "This part is too easy, percentage cost /1000 for now",
+			done() { return player[this.layer].points.gte(30) },
+			unlocked() { return player[this.layer].points.gte(29)}
+			},
+		2: {
+			requirementDescription: "This was way too easy to get a upgrade",
+			effectDescription: "Percentage cost back to normal, now you are in the hardest part of the level, good l̶u̶c̶k̶",
+			done() { return player[this.layer].points.gte(46) },
+			unlocked() { return player[this.layer].points.gte(46)}
+			},
 	},
 })
 
@@ -151,6 +179,16 @@ addLayer("att", {
 	unlocked() { return hasUpgrade("att", 15) },
 	fullDisplay() {return `Try other levels in this difficulty <br> <br> requires: 90 attempts <br> <br> effect: x1.25 progress`} 
         },
+        21: {
+	canAfford() {return player.att.points.gte(150) },
+	unlocked() { return player.att.points.gte(140) },
+	fullDisplay() {return `Try more levels in this difficulty <br> <br> requires: 150 attempts <br> <br> effect: x1.50 progress`} 
+        },
+        22: {
+	canAfford() {return player.att.points.gte(222) },
+	unlocked() { return player.att.points.gte(200) },
+	fullDisplay() {return `The attempt upgrades with no effect now have one because of the fact that you added explorers into your soul <br> <br> requires: 222 attempts <br> <br> pps x2.2, x2.2 and x5`} 
+        },
 	},
 	milestones: {
 		0: {
@@ -158,7 +196,13 @@ addLayer("att", {
 			effectDescription: "Attempts require more effort, you got 5x better at the game",
 			done() { return player[this.layer].points.gte(101) },
 			unlocked() { return player[this.layer].points.gte(100)}
-			}
+			},
+		1: {
+			requirementDescription: "They would be useless without some keeping",
+			effectDescription: "Keep % upgrades on death",
+			done() { return player[this.layer].points.gte(111) },
+			unlocked() { return player[this.layer].points.gte(111)}
+			},
 	},
 })
 
@@ -227,5 +271,41 @@ addLayer("difficulty", {
 			onClick() {return player.devSpeed = 9001},
 		},
 		
+	},
+})
+
+addLayer("i", {
+    name: "information", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "I", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+    }},
+    color: "#FFFFFF",
+    row: "side", // Row the layer is in on the tree (0 is the first row)
+    tooltip() { // Optional, tooltip displays when the layer is locked
+        return ("Information")
+    },
+    layerShown(){return true},
+    	tabFormat: {
+		"UPG": {
+			content: [["display-text", function() { return 'welcome to the info tab, here you can know how the things in this game will normally look like'}, { "color": "white", "font-size": "20px" }], "blank", ["infobox", "UPG"]],
+		},
+		"MLT": {
+			content: [["infobox", "MLT"]],
+		},
+	},
+    infoboxes: {
+		UPG: {
+			title: "Upgrades: ",
+			body() { return `Progress: are related to gaining confidence and features in the level (stereo madness), they are basically milestones but you don't gain them instantly <br> <br> attempts: are related to getting better at the game and learning about the level` },
+			
+		},
+		
+		MLT: {
+			title: "Milestones:",
+			body() { return `Features used for balancing, can be a nerf, a buff, or both, since they are gained instantly  (I don't know how to make [softcap], thanks to my knowledge ;) )` },
+			
+		},
 	},
 })
