@@ -131,7 +131,7 @@ addLayer("att", {
         if (hasUpgrade('att', 14)) mult = mult.times(0.65)
         if (hasUpgrade('att', 15)) mult = mult.times(0.60)
         if (hasMilestone('att', 0)) mult = mult.times(0.575)
-        if (hasMilestone('att', 0)) mult = mult.times(0.70)
+        if (hasMilestone('att', 2)) mult = mult.times(0.70)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
