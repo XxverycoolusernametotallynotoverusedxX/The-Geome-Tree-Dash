@@ -207,8 +207,8 @@ addLayer("att", {
 		2: {
 			requirementDescription: "You know the drill, don't you?",
 			effectDescription: "attempts require you to get to the easy shit part, you also got 10x better at the game (broken for some reason)",
-			done() { return player[this.layer].points.gte(200) },
-			unlocked() { return player[this.layer].points.gte(201)}
+			done() { return player[this.layer].points.gte(201) },
+			unlocked() { return player[this.layer].points.gte(200)}
 			},
 	},
 })
