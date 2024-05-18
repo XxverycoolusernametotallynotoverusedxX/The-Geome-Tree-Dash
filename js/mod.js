@@ -90,6 +90,7 @@ function getPointGen() {
 	if (hasUpgrade('per', 15)) gain = gain.times(1.22)
 	if (hasUpgrade('per', 16)) gain = gain.times(1.05)
 	if (hasMilestone('att', 0)) gain = gain.times(5)
+	if (hasMilestone('att', 2) gain = gain.times(10)
 	if (hasUpgrade('per', 21)) gain = gain.times(upgradeEffect('per', 21))
 	return gain
 }
