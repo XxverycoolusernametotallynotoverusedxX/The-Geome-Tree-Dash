@@ -131,6 +131,7 @@ addLayer("att", {
         if (hasUpgrade('att', 14)) mult = mult.times(0.65)
         if (hasUpgrade('att', 15)) mult = mult.times(0.60)
         if (hasMilestone('att', 0)) mult = mult.times(0.575)
+        if (hasMilestone('att', 0)) mult = mult.times(0.70)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -202,6 +203,12 @@ addLayer("att", {
 			effectDescription: "Keep % upgrades on death",
 			done() { return player[this.layer].points.gte(111) },
 			unlocked() { return player[this.layer].points.gte(111)}
+			},
+		2: {
+			requirementDescription: "You know the drill, don't you",
+			effectDescription: "attempts require you to get to the easy shit part, you also got 10x better at the game",
+			done() { return player[this.layer].points.gte(200) },
+			unlocked() { return player[this.layer].points.gte(201)}
 			},
 	},
 })
