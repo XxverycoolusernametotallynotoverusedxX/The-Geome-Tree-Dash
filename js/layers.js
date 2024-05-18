@@ -30,7 +30,7 @@ addLayer("per", {
     layerShown(){return true},
 		doReset(resettingLayer) {
 			let keep = [];
-			if (hasMilestone("att", 0) && resettingLayer=="att") keep.push("upgrades")
+			if (hasMilestone("att", 1) && resettingLayer=="att") keep.push("upgrades")
 			if (layers[resettingLayer].row > this.row) layerDataReset("per", keep)
 		},
 	infoboxes: {
